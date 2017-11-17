@@ -51,9 +51,9 @@ class Captcha_Engine_ReCaptcha extends Captcha_Engine
      */
     public function verify($request)
     {
-        $secret = parent::getProperty(Captcha_Engine_ReCAPTCHA::SECRET_KEY, Captcha_Engine_ReCAPTCHA::DEFAULT_SECRET);
+        $secret = parent::getProperty(self::SECRET_KEY, self::SECRET_DEFAULT);
         $recaptcha = new \ReCaptcha\ReCaptcha($secret);
-        $resp = $recaptcha->verify($request->REQUEST['g-recaptcha-response'], $remoteIp);
+        $resp = $recaptcha->verify($request->REQUEST['g-recaptcha-response'], $request->remote_addr);
         return $resp->isSuccess();
     }
 }
