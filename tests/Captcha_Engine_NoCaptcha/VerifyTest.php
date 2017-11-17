@@ -25,7 +25,7 @@ require_once 'Pluf.php';
  * @author maso
  *        
  */
-class Captcha_EngineServiceTest extends TestCase
+class Captcha_Engine_NoCaptcha_VerifyTest extends TestCase
 {
 
     /**
@@ -39,36 +39,18 @@ class Captcha_EngineServiceTest extends TestCase
     /**
      * @test
      */
-    public function testClassInstance()
+    public function testAssertRequest()
     {
-        Test_Assert::assertTrue(method_exists('Captcha_Service', 'getEngine'));
-        Test_Assert::assertTrue(method_exists('Captcha_Service', 'engines'));
-    }
-
-    /**
-     * @test
-     */
-    public function testGetEngines()
-    {
-        $engList = Captcha_Service::engines();
-        Test_Assert::assertNotNull($engList);
-        Test_Assert::assertTrue(sizeof($engList) > 0);
-    }
-
-    /**
-     * @test
-     */
-    public function testGetEngine()
-    {
-        $engList = Captcha_Service::engines();
-        Test_Assert::assertNotNull($engList);
-        Test_Assert::assertTrue(sizeof($engList) > 0);
-        // Check engines
-        foreach ($engList as $engine) {
-            $et = Captcha_Service::getEngine($engine->getType());
-            Test_Assert::assertNotNull($et);
-            Test_Assert::assertTrue($et instanceof Captcha_Engine);
-        }
+        $e = new Captcha_Engine_NoCaptcha();
+        Test_Assert::assertNotNull($e);
+        Test_Assert::assertTrue($e instanceof Captcha_Engine);
+        
+        $client = new Test_Client(array());
+        Test_Assert::assertNotNull($client);
+        
+        $request = new Pluf_HTTP_Request("/");
+        $request->method = 'POST';
+        Test_Assert::assertTrue($e->verify($request));
     }
 }
 

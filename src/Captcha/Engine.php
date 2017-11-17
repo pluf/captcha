@@ -45,13 +45,13 @@ class Captcha_Engine implements JsonSerializable
      * is read only value and the engine itself are not able to edit.
      *
      * <code><pre>
-     *  $secure = parent::getProperty("reCAPTHCA.secureCode");
-     *  if($secure == NULL){
-     *      throw new Pluf_Exception("Secure code is not set");
-     *  }
+     * $secure = parent::getProperty("reCAPTHCA.secureCode");
+     * if($secure == NULL){
+     * throw new Pluf_Exception("Secure code is not set");
+     * }
      * </pre></code>
-     * 
-     * 
+     *
+     *
      * @param string $key
      * @param string $default
      */
@@ -92,10 +92,12 @@ class Captcha_Engine implements JsonSerializable
      *
      *
      * @param Pluf_HTTP_Request $request
+     * @return boolean the state of verification
      */
     public function verify($request)
     {
-        // XXX: maso, 1395: ایجاد یک پرداخت
+        // NOTE: must be overide
+        return false;
     }
 
     /**

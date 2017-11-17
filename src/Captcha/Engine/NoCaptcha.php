@@ -19,41 +19,21 @@
  */
 
 /**
- * Sysetem captcha service
+ * Check google recaptcha
  *
  * @author maso<mostafa.barmshory@dpq.co.ir>
  *        
  */
-class Captcha_Service
+class Captcha_Engine_NoCaptcha extends Captcha_Engine
 {
 
     /**
-     * Find engine
      *
-     * @param string $type
-     * @return Captcha_Engine engine
+     * {@inheritdoc}
+     * @see Captcha_Engine::verify()
      */
-    public static function getEngine($type)
+    public function verify($request)
     {
-        $items = self::engines();
-        foreach ($items as $item) {
-            if ($item->getType() === $type) {
-                return $item;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Gets engines list
-     *
-     * @return array of engines
-     */
-    public static function engines()
-    {
-        return array(
-            new Captcha_Engine_ReCaptcha(),
-            new Captcha_Engine_NoCaptcha()
-        );
+        return true;
     }
 }

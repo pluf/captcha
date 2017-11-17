@@ -9,13 +9,13 @@
  * @author maso <mostafa.barmshory@dpq.co.ir>
  *        
  */
-class Captcha_Middleware_Verifier
+class Captcha_Middleware_Verifier implements Pluf_Middleware
 {
 
     /**
-     * Check request to detect bot
      *
-     * @param Pluf_HTTP_Request $request
+     * {@inheritdoc}
+     * @see Pluf_Middleware::process_request()
      */
     function process_request(&$request)
     {
@@ -39,4 +39,12 @@ class Captcha_Middleware_Verifier
         }
         return false;
     }
+
+    /**
+     *
+     * {@inheritdoc}
+     * @see Pluf_Middleware::process_response()
+     */
+    public function process_response($request, $response)
+    {}
 }

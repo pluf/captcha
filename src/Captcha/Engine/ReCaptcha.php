@@ -24,7 +24,7 @@
  * @author maso<mostafa.barmshory@dpq.co.ir>
  *        
  */
-class Captcha_Engine_ReCAPTCHA extends Captcha_Engine
+class Captcha_Engine_ReCaptcha extends Captcha_Engine
 {
 
     /**

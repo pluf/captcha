@@ -25,7 +25,7 @@ require_once 'Pluf.php';
  * @author maso
  *        
  */
-class Captcha_EngineServiceTest extends TestCase
+class Captcha_Middleware_VerifierTest extends TestCase
 {
 
     /**
@@ -41,34 +41,9 @@ class Captcha_EngineServiceTest extends TestCase
      */
     public function testClassInstance()
     {
-        Test_Assert::assertTrue(method_exists('Captcha_Service', 'getEngine'));
-        Test_Assert::assertTrue(method_exists('Captcha_Service', 'engines'));
-    }
-
-    /**
-     * @test
-     */
-    public function testGetEngines()
-    {
-        $engList = Captcha_Service::engines();
-        Test_Assert::assertNotNull($engList);
-        Test_Assert::assertTrue(sizeof($engList) > 0);
-    }
-
-    /**
-     * @test
-     */
-    public function testGetEngine()
-    {
-        $engList = Captcha_Service::engines();
-        Test_Assert::assertNotNull($engList);
-        Test_Assert::assertTrue(sizeof($engList) > 0);
-        // Check engines
-        foreach ($engList as $engine) {
-            $et = Captcha_Service::getEngine($engine->getType());
-            Test_Assert::assertNotNull($et);
-            Test_Assert::assertTrue($et instanceof Captcha_Engine);
-        }
+        $v = new Captcha_Middleware_Verifier();
+        Test_Assert::assertNotNull($v);
+        Test_Assert::assertTrue($v instanceof Pluf_Middleware);
     }
 }
 
