@@ -1,6 +1,6 @@
 {
-	"name": "recaptcha",
-	"title": "Google recaptcha",
+	"name": "captcha",
+	"title": "Pluf captcha",
 	"model": [],
 	"permisson": []
 }
