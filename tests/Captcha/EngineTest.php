@@ -21,6 +21,8 @@ use PHPUnit\Framework\TestCase;
 require_once 'Pluf.php';
 
 /**
+ * @backupGlobals disabled
+ * @backupStaticAttributes disabled
  *
  * @author maso
  *        

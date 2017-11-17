@@ -21,7 +21,7 @@ class Captcha_Middleware_Verifier implements Pluf_Middleware
     {
         // No need recaptch for users
         if (! ($request->user == null || $request->user->isAnonymous())) {
-            return;
+            return false;
         }
         // READ methods
         $methods = array(
@@ -29,10 +29,10 @@ class Captcha_Middleware_Verifier implements Pluf_Middleware
             'HEAD'
         );
         if (in_array($request->method, $methods)) {
-            return;
+            return false;
         }
         // maso, 2017: load engine and verify request
-        $type = Setting_Service::get("captcha.engine", "ReCaptcha");
+        $type = Setting_Service::get('captcha.engine', 'nocaptcha');
         $engine = Captcha_Service::getEngine($type);
         if (! $engine->verify($request)) {
             throw new Captcha_Exception_CaptchaRequired();

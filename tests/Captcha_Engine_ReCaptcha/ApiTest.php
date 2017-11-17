@@ -22,8 +22,10 @@ require_once 'Pluf.php';
 
 /**
  *
+ * @backupGlobals disabled
+ * @backupStaticAttributes disabled
+ * 
  * @author maso
- *        
  */
 class Captcha_Engine_ReCaptcha_ApiTest extends TestCase
 {
