@@ -46,5 +46,7 @@ class Captcha_Middleware_Verifier implements Pluf_Middleware
      * @see Pluf_Middleware::process_response()
      */
     public function process_response($request, $response)
-    {}
+    {
+        return $response;
+    }
 }
