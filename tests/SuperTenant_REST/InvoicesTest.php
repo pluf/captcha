@@ -39,7 +39,7 @@ class SuperTenant_REST_InvoicesTest extends TestCase
         ));
         $m->install();
         // Test user
-        $user = new Pluf_User();
+        $user = new User();
         $user->login = 'test';
         $user->first_name = 'test';
         $user->last_name = 'test';
@@ -68,7 +68,7 @@ class SuperTenant_REST_InvoicesTest extends TestCase
         $per->model_id = $tenant->id;
         $per->model_class = 'Pluf_Tenant';
         $per->owner_id = $user->id;
-        $per->owner_class = 'Pluf_User';
+        $per->owner_class = 'User';
         $per->create();
     }
 

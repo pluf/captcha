@@ -45,7 +45,7 @@ class Tenant_REST_TenantTest extends TestCase
         ));
         $m->install();
         // Test user
-        self::$user = new Pluf_User();
+        self::$user = new User();
         self::$user->login = 'test';
         self::$user->first_name = 'test';
         self::$user->last_name = 'test';
@@ -87,7 +87,7 @@ class Tenant_REST_TenantTest extends TestCase
         $per->model_id = self::$tenant->id;
         $per->model_class = 'Pluf_Tenant';
         $per->owner_id = self::$user->id;
-        $per->owner_class = 'Pluf_User';
+        $per->owner_class = 'User';
         $per->create();
     }
 
