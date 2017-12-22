@@ -44,7 +44,7 @@ class Captcha_Engine_ReCaptcha_VerifyTest extends TestCase
         ));
         $m->install();
         // Test user
-        self::$user = new Pluf_User();
+        self::$user = new User();
         self::$user->login = 'test';
         self::$user->first_name = 'test';
         self::$user->last_name = 'test';
