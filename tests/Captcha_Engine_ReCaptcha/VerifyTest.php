@@ -35,13 +35,8 @@ class Captcha_Engine_ReCaptcha_VerifyTest extends TestCase
      */
     public static function installApps()
     {
-        Pluf::start(dirname(__FILE__) . '/../conf/config.mysql.php');
-        $m = new Pluf_Migration(array(
-            'Pluf',
-            'User',
-            'Setting',
-            'Captcha'
-        ));
+        Pluf::start(__DIR__ . '/../conf/config.mysql.php');
+        $m = new Pluf_Migration(Pluf::f('installed_apps'));
         $m->install();
         // Test user
         self::$user = new User();
@@ -71,12 +66,7 @@ class Captcha_Engine_ReCaptcha_VerifyTest extends TestCase
      */
     public static function uninstallApps()
     {
-        $m = new Pluf_Migration(array(
-            'Pluf',
-            'User',
-            'Setting',
-            'Captcha'
-        ));
+        $m = new Pluf_Migration(Pluf::f('installed_apps'));
         $m->unInstall();
     }
 
