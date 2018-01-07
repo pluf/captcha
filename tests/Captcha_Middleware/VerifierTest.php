@@ -159,7 +159,7 @@ class Captcha_Middleware_VerifierTest extends TestCase
         Test_Assert::assertNotNull($v);
         Test_Assert::assertTrue($v instanceof Pluf_Middleware);
         
-        Setting_Service::set('captcha.engine', 'nocaptcha');
+        Tenant_Service::setSetting('captcha.engine', 'nocaptcha');
         $methods = array(
             'POST',
             'DELETE'
@@ -186,7 +186,7 @@ class Captcha_Middleware_VerifierTest extends TestCase
         Test_Assert::assertNotNull($v);
         Test_Assert::assertTrue($v instanceof Pluf_Middleware);
         
-        Setting_Service::set('captcha.engine', 'recaptcha');
+        Tenant_Service::setSetting('captcha.engine', 'recaptcha');
         $methods = array(
             'POST',
             'DELETE'

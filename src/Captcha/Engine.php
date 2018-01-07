@@ -57,7 +57,7 @@ class Captcha_Engine implements JsonSerializable
      */
     protected function getProperty($key, $default = NULL)
     {
-        return Setting_Service::get($key, $default);
+        return Tenant_Service::setting($key, $default);
     }
 
     /**
