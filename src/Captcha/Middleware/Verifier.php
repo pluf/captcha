@@ -32,7 +32,7 @@ class Captcha_Middleware_Verifier implements Pluf_Middleware
             return false;
         }
         // maso, 2017: load engine and verify request
-        $type = Setting_Service::get('captcha.engine', 'nocaptcha');
+        $type = Tenant_Service::setting('captcha.engine', 'nocaptcha');
         $engine = Captcha_Service::getEngine($type);
         if (! $engine->verify($request)) {
             throw new Captcha_Exception_CaptchaRequired();
