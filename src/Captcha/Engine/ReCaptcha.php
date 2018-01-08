@@ -53,7 +53,7 @@ class Captcha_Engine_ReCaptcha extends Captcha_Engine
     {
         $secret = parent::getProperty(self::SECRET_KEY, self::SECRET_DEFAULT);
         $recaptcha = new \ReCaptcha\ReCaptcha($secret);
-        $resp = $recaptcha->verify($request->REQUEST['g-recaptcha-response'], $request->remote_addr);
+        $resp = $recaptcha->verify($request->REQUEST['g_recaptcha_response'], $request->remote_addr);
         return $resp->isSuccess();
     }
 }
