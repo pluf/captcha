@@ -2,5 +2,31 @@
 	"name": "captcha",
 	"title": "Pluf captcha",
 	"model": [],
-	"permisson": []
+	"permisson": [],
+	"init": {
+		"Tenant_Setting": [
+			{
+				"mode": "0",
+				"key": "captcha.engine",
+				"value": "nocaptcha",
+				"description": "Captcha engine to use."
+			},{
+				"mode": "0",
+				"key": "captcha.recaptcha.key.public",
+				"value": "not-set",
+				"description": "Public key to use with recaptcah."
+			},{
+				"mode": "1",
+				"key": "captcha.recaptcha.key.private",
+				"value": "not-set",
+				"description": "Private key to use with captcha engine."
+			},{
+				"mode": "0",
+				"key": "spa.default",
+				"value": "my-home",
+				"description": "Default spa for home page"
+			}
+		]
+	}
+	
 }
