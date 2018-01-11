@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1513903241">
-  <project timestamp="1513903241">
+<coverage generated="1515360711">
+  <project timestamp="1515360711">
     <file name="/home/maso/git/pluf/recaptcha/src/Captcha/Engine.php">
       <class name="Captcha_Engine" namespace="global" fullPackage="Captcha">
         <metrics complexity="13" methods="10" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="31" coveredstatements="4" elements="41" coveredelements="5"/>
