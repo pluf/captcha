@@ -52,7 +52,14 @@ class Captcha_Engine_ReCaptcha extends Captcha_Engine
     public function verify($request)
     {
         $secret = parent::getProperty(self::SECRET_KEY, self::SECRET_DEFAULT);
-        $recaptcha = new \ReCaptcha\ReCaptcha($secret);
+        // Try to workaround locked down web servers.
+        if (! ini_get('allow_url_fopen')) {
+            // allow_url_fopen = Off
+            $recaptcha = new \ReCaptcha\ReCaptcha($secret, new \ReCaptcha\RequestMethod\SocketPost());
+        } else {
+            // allow_url_fopen = On
+            $recaptcha = new \ReCaptcha\ReCaptcha($secret);
+        }
         $resp = $recaptcha->verify($request->REQUEST['g_recaptcha_response'], $request->remote_addr);
         return $resp->isSuccess();
     }
