@@ -35,7 +35,7 @@ class Captcha_Engine_ReCaptcha_VerifyTest extends TestCase
      */
     public static function installApps()
     {
-        Pluf::start(__DIR__ . '/../conf/config.mysql.php');
+        Pluf::start(__DIR__ . '/../conf/config.php');
         $m = new Pluf_Migration(Pluf::f('installed_apps'));
         $m->install();
         // Test user
@@ -84,7 +84,25 @@ class Captcha_Engine_ReCaptcha_VerifyTest extends TestCase
         
         $request = new Pluf_HTTP_Request("/");
         $request->method = 'POST';
-        $request->REQUEST['g-recaptcha-response'] = 'testtooken';
+        $request->REQUEST['g_recaptcha_response'] = 'testtooken';
+        Test_Assert::assertFalse($e->verify($request));
+    }
+    
+    /**
+     * @test
+     */
+    public function testAndroidAssertRequest()
+    {
+        $e = new Captcha_Engine_ReCaptcha();
+        Test_Assert::assertNotNull($e);
+        Test_Assert::assertTrue($e instanceof Captcha_Engine);
+        
+        $client = new Test_Client(array());
+        Test_Assert::assertNotNull($client);
+        
+        $request = new Pluf_HTTP_Request("/");
+        $request->method = 'POST';
+        $request->REQUEST['g_recaptcha_android_response'] = 'testtooken';
         Test_Assert::assertFalse($e->verify($request));
     }
 }

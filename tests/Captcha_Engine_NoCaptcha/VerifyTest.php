@@ -35,7 +35,7 @@ class Captcha_Engine_NoCaptcha_VerifyTest extends TestCase
      */
     public function setUp()
     {
-        Pluf::start(__DIR__ . '/../conf/config.mysql.php');
+        Pluf::start(__DIR__ . '/../conf/config.php');
     }
 
     /**

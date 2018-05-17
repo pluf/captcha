@@ -38,7 +38,7 @@ class Captcha_Middleware_VerifierTest extends TestCase
      */
     public static function installApps()
     {
-        Pluf::start(__DIR__ . '/../conf/config.mysql.php');
+        Pluf::start(__DIR__ . '/../conf/config.php');
         $m = new Pluf_Migration(Pluf::f('installed_apps'));
         $m->install();
         
@@ -93,7 +93,7 @@ class Captcha_Middleware_VerifierTest extends TestCase
         Test_Assert::assertNotNull($client);
         
         $request = new Pluf_HTTP_Request("/");
-        $request->REQUEST['g-recaptcha-response'] = 'testtooken';
+        $request->REQUEST['g_recaptcha_response'] = 'testtooken';
         
         $v = new Captcha_Middleware_Verifier();
         Test_Assert::assertNotNull($v);
@@ -118,7 +118,7 @@ class Captcha_Middleware_VerifierTest extends TestCase
         Test_Assert::assertNotNull($client);
         
         $request = new Pluf_HTTP_Request("/");
-        $request->REQUEST['g-recaptcha-response'] = 'testtooken';
+        $request->REQUEST['g_recaptcha_response'] = 'testtooken';
         $request->user = self::$user;
         
         $v = new Captcha_Middleware_Verifier();
@@ -144,7 +144,7 @@ class Captcha_Middleware_VerifierTest extends TestCase
         Test_Assert::assertNotNull($client);
         
         $request = new Pluf_HTTP_Request("/");
-        $request->REQUEST['g-recaptcha-response'] = 'testtooken';
+        $request->REQUEST['g_recaptcha_response'] = 'testtooken';
         
         $v = new Captcha_Middleware_Verifier();
         Test_Assert::assertNotNull($v);
@@ -171,7 +171,7 @@ class Captcha_Middleware_VerifierTest extends TestCase
         Test_Assert::assertNotNull($client);
         
         $request = new Pluf_HTTP_Request("/");
-        $request->REQUEST['g-recaptcha-response'] = 'testtooken';
+        $request->REQUEST['g_recaptcha_response'] = 'testtooken';
         
         $v = new Captcha_Middleware_Verifier();
         Test_Assert::assertNotNull($v);
