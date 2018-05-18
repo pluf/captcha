@@ -36,6 +36,7 @@ class Captcha_Engine_ReCaptcha extends Captcha_Engine
      * @var string
      */
     const SECRET_DEFAULT = '6LeuFzkUAAAAAEIIggHSQUNlTkiJ8UVXLMsHoH3s';
+    const SECRET_ANDROID_DEFAULT = '6LcnvlkUAAAAAOfxhviySyLGNH0CEmVV65RL4ZHQ';
 
     /**
      * Secret key identitifier
@@ -43,6 +44,10 @@ class Captcha_Engine_ReCaptcha extends Captcha_Engine
      * @var string
      */
     const SECRET_KEY = 'captcha.engine.recaptcha.secret';
+    const TOKEN_KEY = 'g_recaptcha_response';
+    
+    const SECRET_ANDROID_KEY = 'captcha.engine.recaptcha.android.secret';
+    const TOKEN_ANDROID_KEY = 'g_recaptcha_android_response';
 
     /**
      *
@@ -51,7 +56,17 @@ class Captcha_Engine_ReCaptcha extends Captcha_Engine
      */
     public function verify($request)
     {
-        $secret = parent::getProperty(self::SECRET_KEY, self::SECRET_DEFAULT);
+        // load key and token
+        if(array_key_exists(self::TOKEN_KEY, $request->REQUEST)){
+            $secret = parent::getProperty(self::SECRET_KEY, self::SECRET_DEFAULT);
+            $token = $request->REQUEST[self::TOKEN_KEY];
+        } else if(array_key_exists(self::TOKEN_ANDROID_KEY, $request->REQUEST)){
+            $secret = parent::getProperty(self::SECRET_ANDROID_KEY, self::SECRET_ANDROID_DEFAULT);
+            $token = $request->REQUEST[self::TOKEN_ANDROID_KEY];
+        } else {
+            // TODO: maos, 2018: throw 404 error
+            throw new Pluf_Exception_MismatchParameter('recaptcha token not found');
+        }
         // Try to workaround locked down web servers.
         if (! ini_get('allow_url_fopen')) {
             // allow_url_fopen = Off
@@ -60,7 +75,7 @@ class Captcha_Engine_ReCaptcha extends Captcha_Engine
             // allow_url_fopen = On
             $recaptcha = new \ReCaptcha\ReCaptcha($secret);
         }
-        $resp = $recaptcha->verify($request->REQUEST['g_recaptcha_response'], $request->remote_addr);
+        $resp = $recaptcha->verify($token, $request->remote_addr);
         return $resp->isSuccess();
     }
 }
