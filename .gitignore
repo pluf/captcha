@@ -13,7 +13,7 @@ composer-setup.php
 composer.phar
 
 clover.xml
-/build/
 
 # netbeans
 /nbproject/private/
+/build/
