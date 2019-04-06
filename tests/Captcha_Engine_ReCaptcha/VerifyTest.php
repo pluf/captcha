@@ -39,17 +39,25 @@ class Captcha_Engine_ReCaptcha_VerifyTest extends TestCase
         $m = new Pluf_Migration(Pluf::f('installed_apps'));
         $m->install();
         // Test user
-        self::$user = new User();
-        self::$user->login = 'test';
-        self::$user->first_name = 'test';
-        self::$user->last_name = 'test';
-        self::$user->email = 'toto@example.com';
-        self::$user->setPassword('test');
-        self::$user->active = true;
-        self::$user->administrator = true;
-        if (true !== self::$user->create()) {
+        $user = new User_Account();
+        $user->login = 'test';
+        $user->is_active = true;
+        if (true !== $user->create()) {
             throw new Exception();
         }
+        // Credential of user
+        $credit = new User_Credential();
+        $credit->setFromFormData(array(
+            'account_id' => $user->id
+        ));
+        $credit->setPassword('test');
+        if (true !== $credit->create()) {
+            throw new Exception();
+        }
+        
+        $per = User_Role::getFromString('tenant.owner');
+        $user->setAssoc($per);
+        self::$user = $user;
         
         // Test tenant
         self::$tenant = new Pluf_Tenant();
