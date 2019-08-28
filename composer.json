@@ -17,7 +17,7 @@
 	],
 	"minimum-stability" : "stable",
 	"require" : {
-		"pluf/tenant" : "5.8.x",
+		"pluf/tenant" : "5.9.x",
 		"google/recaptcha" : "~1.1"
 	},
 	"require-dev" : {
