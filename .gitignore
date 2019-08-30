@@ -1,6 +1,8 @@
 # Eclipse
 #.buildpath
 /.settings/
+.phpunit.result.cache
+.buildpath
 
 
 # Examples
@@ -13,7 +15,7 @@ composer-setup.php
 composer.phar
 
 clover.xml
+/build/
 
 # netbeans
 /nbproject/private/
-/build/
