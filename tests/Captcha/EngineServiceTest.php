@@ -16,21 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-use PHPUnit\Framework\TestCase;
+namespace Pluf\Test\Captcha;
 
-require_once 'Pluf.php';
+use Pluf\Captcha;
+use Pluf\Test\TestCase;
+use Pluf;
 
-/**
- * @backupGlobals disabled
- * @backupStaticAttributes disabled
- *
- * @author maso
- *        
- */
-class Captcha_EngineServiceTest extends TestCase
+class EngineServiceTest extends TestCase
 {
 
     /**
+     *
      * @before
      */
     public function setUpTest()
@@ -39,37 +35,40 @@ class Captcha_EngineServiceTest extends TestCase
     }
 
     /**
+     *
      * @test
      */
     public function testClassInstance()
     {
-        Test_Assert::assertTrue(method_exists('Captcha_Service', 'getEngine'));
-        Test_Assert::assertTrue(method_exists('Captcha_Service', 'engines'));
+        $this->assertTrue(method_exists('\Pluf\Captcha\Service', 'getEngine'));
+        $this->assertTrue(method_exists('\Pluf\Captcha\Service', 'engines'));
     }
 
     /**
+     *
      * @test
      */
     public function testGetEngines()
     {
-        $engList = Captcha_Service::engines();
-        Test_Assert::assertNotNull($engList);
-        Test_Assert::assertTrue(sizeof($engList) > 0);
+        $engList = Captcha\Service::engines();
+        $this->assertNotNull($engList);
+        $this->assertTrue(sizeof($engList) > 0);
     }
 
     /**
+     *
      * @test
      */
     public function testGetEngine()
     {
-        $engList = Captcha_Service::engines();
-        Test_Assert::assertNotNull($engList);
-        Test_Assert::assertTrue(sizeof($engList) > 0);
+        $engList = Captcha\Service::engines();
+        $this->assertNotNull($engList);
+        $this->assertTrue(sizeof($engList) > 0);
         // Check engines
         foreach ($engList as $engine) {
-            $et = Captcha_Service::getEngine($engine->getType());
-            Test_Assert::assertNotNull($et);
-            Test_Assert::assertTrue($et instanceof Captcha_Engine);
+            $et = Captcha\Service::getEngine($engine->getType());
+            $this->assertNotNull($et);
+            $this->assertTrue($et instanceof Captcha\Engine);
         }
     }
 }

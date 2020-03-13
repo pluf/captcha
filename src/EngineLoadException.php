@@ -17,6 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+namespace Pluf\Captcha;
+
+use Pluf\Exception;
 
 /**
  * Faild to load engine exception
@@ -24,14 +27,14 @@
  * @author maso <mostafa.barmshory@dpq.co.ir>
  *        
  */
-class Captcha_Exception_EngineLoad extends Pluf_Exception
+class EngineLoadException extends Exception
 {
 
     /**
      * Creates new instance of this class
      *
      * @param string $message
-     * @param Pluf_Exception $previous
+     * @param Exception $previous
      * @param string $link
      * @param string $developerMessage
      */

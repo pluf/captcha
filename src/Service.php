@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of Pluf Framework, a simple PHP Application Framework.
  * Copyright (C) 2010-2020 Phoinex Scholars Co. (http://dpq.co.ir)
@@ -17,23 +16,44 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+namespace Pluf\Captcha;
 
 /**
- * Check google recaptcha
+ * Sysetem captcha service
  *
  * @author maso<mostafa.barmshory@dpq.co.ir>
  *        
  */
-class Captcha_Engine_NoCaptcha extends Captcha_Engine
+class Service
 {
 
     /**
+     * Find engine
      *
-     * {@inheritdoc}
-     * @see Captcha_Engine::verify()
+     * @param string $type
+     * @return Engine engine
      */
-    public function verify($request)
+    public static function getEngine(string $type): ?Engine
     {
-        return true;
+        $items = self::engines();
+        foreach ($items as $item) {
+            if ($item->getType() === $type) {
+                return $item;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Gets engines list
+     *
+     * @return array of engines
+     */
+    public static function engines()
+    {
+        return array(
+            new Engine\ReCaptcha(),
+            new Engine\NoCaptcha()
+        );
     }
 }

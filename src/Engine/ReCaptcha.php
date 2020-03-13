@@ -17,6 +17,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+namespace Pluf\Captcha\Engine;
+
+use Pluf_Exception_MismatchParameter;
+use Pluf_HTTP_Request;
 
 /**
  * Check google recaptcha
@@ -24,7 +28,7 @@
  * @author maso<mostafa.barmshory@dpq.co.ir>
  *        
  */
-class Captcha_Engine_ReCaptcha extends Captcha_Engine
+class ReCaptcha extends \Pluf\Captcha\Engine
 {
 
     /**
@@ -36,6 +40,7 @@ class Captcha_Engine_ReCaptcha extends Captcha_Engine
      * @var string
      */
     const SECRET_DEFAULT = '6LeuFzkUAAAAAEIIggHSQUNlTkiJ8UVXLMsHoH3s';
+
     const SECRET_ANDROID_DEFAULT = '6LcnvlkUAAAAAOfxhviySyLGNH0CEmVV65RL4ZHQ';
 
     /**
@@ -44,23 +49,25 @@ class Captcha_Engine_ReCaptcha extends Captcha_Engine
      * @var string
      */
     const SECRET_KEY = 'captcha.engine.recaptcha.secret';
+
     const TOKEN_KEY = 'g_recaptcha_response';
-    
+
     const SECRET_ANDROID_KEY = 'captcha.engine.recaptcha.android.secret';
+
     const TOKEN_ANDROID_KEY = 'g_recaptcha_android_response';
 
     /**
      *
      * {@inheritdoc}
-     * @see Captcha_Engine::verify()
+     * @see \Pluf\Captcha\Engine::verify()
      */
-    public function verify($request)
+    public function verify(Pluf_HTTP_Request $request): bool
     {
         // load key and token
-        if(array_key_exists(self::TOKEN_KEY, $request->REQUEST)){
+        if (array_key_exists(self::TOKEN_KEY, $request->REQUEST)) {
             $secret = parent::getProperty(self::SECRET_KEY, self::SECRET_DEFAULT);
             $token = $request->REQUEST[self::TOKEN_KEY];
-        } else if(array_key_exists(self::TOKEN_ANDROID_KEY, $request->REQUEST)){
+        } else if (array_key_exists(self::TOKEN_ANDROID_KEY, $request->REQUEST)) {
             $secret = parent::getProperty(self::SECRET_ANDROID_KEY, self::SECRET_ANDROID_DEFAULT);
             $token = $request->REQUEST[self::TOKEN_ANDROID_KEY];
         } else {

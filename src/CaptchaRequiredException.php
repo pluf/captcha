@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of Pluf Framework, a simple PHP Application Framework.
  * Copyright (C) 2010-2020 Phoinex Scholars Co. (http://dpq.co.ir)
@@ -16,43 +17,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-namespace Pluf\Test\Captcha;
+namespace Pluf\Captcha;
 
-use Pluf\Captcha;
-use Pluf\Test\TestCase;
-use Pluf;
-use Pluf_HTTP_Request;
+use Pluf\Exception;
 
-class TestEngeingClass extends Captcha\Engine
-{
-
-    public function verify(Pluf_HTTP_Request $request): bool
-    {
-        return true;
-    }
-}
-
-class EngineTest extends TestCase
+/**
+ * Access without captcha exception.
+ *
+ * @author maso <mostafa.barmshory@dpq.co.ir>
+ *        
+ */
+class CaptchaRequiredException extends Exception
 {
 
     /**
+     * Creates new instance of this class
      *
-     * @before
+     * @param string $message
+     * @param Exception $previous
+     * @param string $link
+     * @param string $developerMessage
      */
-    public function setUpTest()
+    public function __construct($message = "captcha required.", $previous = null, $link = null, $developerMessage = null)
     {
-        Pluf::start(__DIR__ . '/../conf/config.php');
-    }
-
-    /**
-     *
-     * @test
-     */
-    public function testClassInstance()
-    {
-        $c = new TestEngeingClass();
-        $this->assertTrue(isset($c));
-        $this->assertTrue(true);
+        // XXX: maso, 1395: تعیین کد خطا
+        parent::__construct($message, 4401, $previous, 401, $link, $developerMessage);
     }
 }
-

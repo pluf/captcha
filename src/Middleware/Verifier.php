@@ -1,15 +1,22 @@
 <?php
+namespace Pluf\Captcha\Middleware;
+
+use Pluf\Captcha\CaptchaRequiredException;
+use Pluf\Captcha\Service;
+use Pluf_Middleware;
+use Tenant_Service;
 
 /**
  * Verifier middleware
- * 
+ *
  * Must be used after session layer
- * 
+ *
  * See https://www.google.com/recaptcha/admin#site/339285934
+ *
  * @author maso <mostafa.barmshory@dpq.co.ir>
  *        
  */
-class Captcha_Middleware_Verifier implements Pluf_Middleware
+class Verifier implements Pluf_Middleware
 {
 
     /**
@@ -33,9 +40,9 @@ class Captcha_Middleware_Verifier implements Pluf_Middleware
         }
         // maso, 2017: load engine and verify request
         $type = Tenant_Service::setting('captcha.engine', 'nocaptcha');
-        $engine = Captcha_Service::getEngine($type);
+        $engine = Service::getEngine($type);
         if (! $engine->verify($request)) {
-            throw new Captcha_Exception_CaptchaRequired();
+            throw new CaptchaRequiredException();
         }
         return false;
     }

@@ -16,36 +16,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-use PHPUnit\Framework\TestCase;
+namespace Pluf\Test\Captcha\Engine\NoCaptcha;
 
-require_once 'Pluf.php';
+use Pluf\Captcha;
+use Pluf\Test\TestCase;
+use Pluf;
 
-/**
- * @backupGlobals disabled
- * @backupStaticAttributes disabled
- *
- * @author maso
- *        
- */
-class Captcha_Engine_NoCaptcha_ApiTest extends TestCase
+class ApiTest extends TestCase
 {
 
     /**
+     *
      * @before
      */
     public function setUpTest()
     {
-        Pluf::start(__DIR__ . '/../conf/config.php');
+        Pluf::start(__DIR__ . '/../../../conf/config.php');
     }
 
     /**
+     *
      * @test
      */
     public function testClassInstance()
     {
-        $e = new Captcha_Engine_NoCaptcha();
-        Test_Assert::assertNotNull($e);
-        Test_Assert::assertTrue($e instanceof Captcha_Engine);
+        $e = new Captcha\Engine\NoCaptcha();
+        $this->assertNotNull($e);
+        $this->assertTrue($e instanceof Captcha\Engine);
     }
 }
 
