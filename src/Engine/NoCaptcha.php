@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of Pluf Framework, a simple PHP Application Framework.
  * Copyright (C) 2010-2020 Phoinex Scholars Co. (http://dpq.co.ir)
@@ -16,43 +17,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-use PHPUnit\Framework\TestCase;
+namespace Pluf\Captcha\Engine;
 
-require_once 'Pluf.php';
+use Pluf_HTTP_Request;
 
 /**
- * @backupGlobals disabled
- * @backupStaticAttributes disabled
+ * Check google recaptcha
  *
- * @author maso
+ * @author maso<mostafa.barmshory@dpq.co.ir>
  *        
  */
-class Captcha_Engine_NoCaptcha_VerifyTest extends TestCase
+class NoCaptcha extends \Pluf\Captcha\Engine
 {
 
     /**
-     * @before
+     *
+     * {@inheritdoc}
+     * @see \Pluf\Captcha\Engine::verify()
      */
-    public function setUpTest()
+    public function verify(Pluf_HTTP_Request $request): bool
     {
-        Pluf::start(__DIR__ . '/../conf/config.php');
-    }
-
-    /**
-     * @test
-     */
-    public function testAssertRequest()
-    {
-        $e = new Captcha_Engine_NoCaptcha();
-        Test_Assert::assertNotNull($e);
-        Test_Assert::assertTrue($e instanceof Captcha_Engine);
-        
-        $client = new Test_Client(array());
-        Test_Assert::assertNotNull($client);
-        
-        $request = new Pluf_HTTP_Request("/");
-        $request->method = 'POST';
-        Test_Assert::assertTrue($e->verify($request));
+        return true;
     }
 }
-

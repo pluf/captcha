@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of Pluf Framework, a simple PHP Application Framework.
  * Copyright (C) 2010-2020 Phoinex Scholars Co. (http://dpq.co.ir)
@@ -17,43 +16,51 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+namespace Pluf\Test\Captcha\Engine\NoCaptcha;
+
+use PHPUnit\Framework\TestCase;
+use Pluf\Captcha;
+use Pluf\Test\Client;
+use Pluf;
+use Pluf_HTTP_Request;
+require_once 'Pluf.php';
 
 /**
- * Sysetem captcha service
  *
- * @author maso<mostafa.barmshory@dpq.co.ir>
+ * @backupGlobals disabled
+ * @backupStaticAttributes disabled
+ *
+ * @author maso
  *        
  */
-class Captcha_Service
+class Captcha_Engine_NoCaptcha_VerifyTest extends TestCase
 {
 
     /**
-     * Find engine
      *
-     * @param string $type
-     * @return Captcha_Engine engine
+     * @before
      */
-    public static function getEngine($type)
+    public function setUpTest()
     {
-        $items = self::engines();
-        foreach ($items as $item) {
-            if ($item->getType() === $type) {
-                return $item;
-            }
-        }
-        return null;
+        Pluf::start(__DIR__ . '/../../../conf/config.php');
     }
 
     /**
-     * Gets engines list
      *
-     * @return array of engines
+     * @test
      */
-    public static function engines()
+    public function testAssertRequest()
     {
-        return array(
-            new Captcha_Engine_ReCaptcha(),
-            new Captcha_Engine_NoCaptcha()
-        );
+        $e = new Captcha\Engine\NoCaptcha();
+        $this->assertNotNull($e);
+        $this->assertTrue($e instanceof Captcha\Engine);
+
+        $client = new Client();
+        $this->assertNotNull($client);
+
+        $request = new Pluf_HTTP_Request("/");
+        $request->method = 'POST';
+        $this->assertTrue($e->verify($request));
     }
 }
+

@@ -1,8 +1,7 @@
 <?php
-
 /*
  * This file is part of Pluf Framework, a simple PHP Application Framework.
- * Copyright (C) 2010-2020 Phoinex Scholars Co. (http://dpq.co.ir)
+ * Copyright (C) 2010-2020 Phoinex Scholars Co. http://dpq.co.ir
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,27 +16,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+namespace Pluf\Captcha;
 
-/**
- * Access without captcha exception.
- *
- * @author maso <mostafa.barmshory@dpq.co.ir>
- *        
- */
-class Captcha_Exception_CaptchaRequired extends Pluf_Exception
+use Pluf;
+
+class Module extends \Pluf\Module
 {
 
-    /**
-     * Creates new instance of this class
-     *
-     * @param string $message
-     * @param Pluf_Exception $previous
-     * @param string $link
-     * @param string $developerMessage
-     */
-    public function __construct($message = "captcha required.", $previous = null, $link = null, $developerMessage = null)
-    {
-        // XXX: maso, 1395: تعیین کد خطا
-        parent::__construct($message, 4401, $previous, 401, $link, $developerMessage);
-    }
+    const moduleJsonPath = __DIR__ . '/module.json';
+
+    const relations = array();
+
+    public function init(Pluf $bootstrap): void
+    {}
 }
+

@@ -16,14 +16,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-use PHPUnit\Framework\TestCase;
-require_once 'Pluf.php';
+namespace Pluf\Test\Captcha\Engine\ReCaptcha;
 
-/**
- * @backupGlobals disabled
- * @backupStaticAttributes disabled
- */
-class Captcha_Engine_ReCaptcha_VerifyTest extends TestCase
+use Pluf\Captcha;
+use Pluf\Exception;
+use Pluf\Test\Client;
+use Pluf\Test\TestCase;
+use Pluf;
+use Pluf_Exception;
+use Pluf_HTTP_Request;
+use Pluf_Migration;
+use Pluf_Tenant;
+use User_Account;
+use User_Credential;
+use User_Role;
+
+class VerifyTest extends TestCase
 {
 
     private static $tenant = null;
@@ -31,11 +39,12 @@ class Captcha_Engine_ReCaptcha_VerifyTest extends TestCase
     private static $user = null;
 
     /**
+     *
      * @beforeClass
      */
     public static function installApps()
     {
-        Pluf::start(__DIR__ . '/../conf/config.php');
+        Pluf::start(__DIR__ . '/../../../conf/config.php');
         $m = new Pluf_Migration(Pluf::f('installed_apps'));
         $m->install();
         // Test user
@@ -54,11 +63,11 @@ class Captcha_Engine_ReCaptcha_VerifyTest extends TestCase
         if (true !== $credit->create()) {
             throw new Exception();
         }
-        
+
         $per = User_Role::getFromString('tenant.owner');
         $user->setAssoc($per);
         self::$user = $user;
-        
+
         // Test tenant
         self::$tenant = new Pluf_Tenant();
         self::$tenant->domain = 'localhost';
@@ -70,6 +79,7 @@ class Captcha_Engine_ReCaptcha_VerifyTest extends TestCase
     }
 
     /**
+     *
      * @afterClass
      */
     public static function uninstallApps()
@@ -79,39 +89,41 @@ class Captcha_Engine_ReCaptcha_VerifyTest extends TestCase
     }
 
     /**
+     *
      * @test
      */
     public function testAssertRequest()
     {
-        $e = new Captcha_Engine_ReCaptcha();
-        Test_Assert::assertNotNull($e);
-        Test_Assert::assertTrue($e instanceof Captcha_Engine);
-        
-        $client = new Test_Client(array());
-        Test_Assert::assertNotNull($client);
-        
+        $e = new Captcha\Engine\ReCaptcha();
+        $this->assertNotNull($e);
+        $this->assertTrue($e instanceof Captcha\Engine);
+
+        $client = new Client();
+        $this->assertNotNull($client);
+
         $request = new Pluf_HTTP_Request("/");
         $request->method = 'POST';
         $request->REQUEST['g_recaptcha_response'] = 'testtooken';
-        Test_Assert::assertFalse($e->verify($request));
+        $this->assertFalse($e->verify($request));
     }
-    
+
     /**
+     *
      * @test
      */
     public function testAndroidAssertRequest()
     {
-        $e = new Captcha_Engine_ReCaptcha();
-        Test_Assert::assertNotNull($e);
-        Test_Assert::assertTrue($e instanceof Captcha_Engine);
-        
-        $client = new Test_Client(array());
-        Test_Assert::assertNotNull($client);
-        
+        $e = new Captcha\Engine\ReCaptcha();
+        $this->assertNotNull($e);
+        $this->assertTrue($e instanceof Captcha\Engine);
+
+        $client = new Client();
+        $this->assertNotNull($client);
+
         $request = new Pluf_HTTP_Request("/");
         $request->method = 'POST';
         $request->REQUEST['g_recaptcha_android_response'] = 'testtooken';
-        Test_Assert::assertFalse($e->verify($request));
+        $this->assertFalse($e->verify($request));
     }
 }
 

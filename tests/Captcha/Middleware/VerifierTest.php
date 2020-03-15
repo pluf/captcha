@@ -16,17 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-use PHPUnit\Framework\TestCase;
+namespace Pluf\Test\Captcha\Middleware;
 
-require_once 'Pluf.php';
+use Pluf\Captcha;
+use Pluf\Exception;
+use Pluf\Test\Client;
+use Pluf\Test\TestCase;
+use Pluf;
+use Pluf_HTTP_Request;
+use Pluf_Middleware;
+use Pluf_Migration;
+use Pluf_Tenant;
+use Tenant_Service;
+use User_Account;
+use User_Credential;
+use User_Role;
 
-/**
- * @backupGlobals disabled
- * @backupStaticAttributes disabled
- *
- * @author maso
- */
-class Captcha_Middleware_VerifierTest extends TestCase
+class VerifierTest extends TestCase
 {
 
     private static $tenant = null;
@@ -34,14 +40,15 @@ class Captcha_Middleware_VerifierTest extends TestCase
     private static $user = null;
 
     /**
+     *
      * @beforeClass
      */
     public static function installApps()
     {
-        Pluf::start(__DIR__ . '/../conf/config.php');
-        $m = new Pluf_Migration(Pluf::f('installed_apps'));
+        Pluf::start(__DIR__ . '/../../conf/config.php');
+        $m = new Pluf_Migration();
         $m->install();
-        
+
         // Test user
         $user = new User_Account();
         $user->login = 'test';
@@ -58,106 +65,111 @@ class Captcha_Middleware_VerifierTest extends TestCase
         if (true !== $credit->create()) {
             throw new Exception();
         }
-        
+
         $per = User_Role::getFromString('tenant.owner');
         $user->setAssoc($per);
         self::$user = $user;
-        
+
         // Test tenant
         self::$tenant = new Pluf_Tenant();
         self::$tenant->domain = 'localhost';
         self::$tenant->subdomain = 'test';
         self::$tenant->validate = true;
         if (true !== self::$tenant->create()) {
-            throw new Pluf_Exception('Faile to create new tenant');
+            throw new \Pluf\Exception('Faile to create new tenant');
         }
     }
 
     /**
+     *
      * @afterClass
      */
     public static function uninstallApps()
     {
-        $m = new Pluf_Migration(Pluf::f('installed_apps'));
+        $m = new Pluf_Migration();
         $m->unInstall();
     }
 
     /**
+     *
      * @test
      */
     public function testClassInstance()
     {
-        $v = new Captcha_Middleware_Verifier();
-        Test_Assert::assertNotNull($v);
-        Test_Assert::assertTrue($v instanceof Pluf_Middleware);
+        $v = new Captcha\Middleware\Verifier();
+        $this->assertNotNull($v);
+        $this->assertTrue($v instanceof Pluf_Middleware);
     }
 
     /**
+     *
      * @test
      */
     public function testMethodRequest()
     {
-        $client = new Test_Client(array());
-        Test_Assert::assertNotNull($client);
-        
+        $client = new Client();
+        $this->assertNotNull($client);
+
         $request = new Pluf_HTTP_Request("/");
         $request->REQUEST['g_recaptcha_response'] = 'testtooken';
-        
-        $v = new Captcha_Middleware_Verifier();
-        Test_Assert::assertNotNull($v);
-        Test_Assert::assertTrue($v instanceof Pluf_Middleware);
-        
+
+        $v = new Captcha\Middleware\Verifier();
+        $this->assertNotNull($v);
+        $this->assertTrue($v instanceof Pluf_Middleware);
+
         $methods = array(
             'GET',
             'HEAD'
         );
         foreach ($methods as $method) {
             $request->method = $method;
-            Test_Assert::assertFalse($v->process_request($request));
+            $this->assertFalse($v->process_request($request));
         }
     }
 
     /**
+     *
      * @test
      */
     public function testَUserRequest()
     {
-        $client = new Test_Client(array());
-        Test_Assert::assertNotNull($client);
-        
+        $client = new Client();
+        $this->assertNotNull($client);
+
         $request = new Pluf_HTTP_Request("/");
         $request->REQUEST['g_recaptcha_response'] = 'testtooken';
         $request->user = self::$user;
-        
-        $v = new Captcha_Middleware_Verifier();
-        Test_Assert::assertNotNull($v);
-        Test_Assert::assertTrue($v instanceof Pluf_Middleware);
-        
+
+        $v = new Captcha\Middleware\Verifier();
+        $this->assertNotNull($v);
+        $this->assertTrue($v instanceof Pluf_Middleware);
+
         $methods = array(
             'POST',
             'DELETE'
         );
         foreach ($methods as $method) {
             $request->method = $method;
-            Test_Assert::assertFalse($v->process_request($request));
+            $this->assertFalse($v->process_request($request));
         }
     }
 
     /**
+     *
      * @test
      */
     public function testَNoCaptchaRequest()
     {
-        $client = new Test_Client(array());
-        Test_Assert::assertNotNull($client);
-        
+        $client = new Client();
+        $this->assertNotNull($client);
+
         $request = new Pluf_HTTP_Request("/");
         $request->REQUEST['g_recaptcha_response'] = 'testtooken';
-        
-        $v = new Captcha_Middleware_Verifier();
-        Test_Assert::assertNotNull($v);
-        Test_Assert::assertTrue($v instanceof Pluf_Middleware);
-        
+
+        $v = new Captcha\Middleware\Verifier();
+        $this->assertNotNull($v);
+        $this->assertTrue($v instanceof Pluf_Middleware);
+
         Tenant_Service::setSetting('captcha.engine', 'nocaptcha');
         $methods = array(
             'POST',
@@ -165,26 +177,27 @@ class Captcha_Middleware_VerifierTest extends TestCase
         );
         foreach ($methods as $method) {
             $request->method = $method;
-            Test_Assert::assertFalse($v->process_request($request));
+            $this->assertFalse($v->process_request($request));
         }
     }
 
     /**
-     * @expectedException Captcha_Exception_CaptchaRequired
+     *
+     * @expectedException \Pluf\Captcha\CaptchaRequiredException
      * @test
      */
     public function testَReCaptchaRequest()
     {
-        $client = new Test_Client(array());
-        Test_Assert::assertNotNull($client);
-        
+        $client = new Client();
+        $this->assertNotNull($client);
+
         $request = new Pluf_HTTP_Request("/");
         $request->REQUEST['g_recaptcha_response'] = 'testtooken';
-        
-        $v = new Captcha_Middleware_Verifier();
-        Test_Assert::assertNotNull($v);
-        Test_Assert::assertTrue($v instanceof Pluf_Middleware);
-        
+
+        $v = new Captcha\Middleware\Verifier();
+        $this->assertNotNull($v);
+        $this->assertTrue($v instanceof Pluf_Middleware);
+
         Tenant_Service::setSetting('captcha.engine', 'recaptcha');
         $methods = array(
             'POST',
@@ -192,7 +205,7 @@ class Captcha_Middleware_VerifierTest extends TestCase
         );
         foreach ($methods as $method) {
             $request->method = $method;
-            Test_Assert::assertFalse($v->process_request($request));
+            $this->assertFalse($v->process_request($request));
         }
     }
 }

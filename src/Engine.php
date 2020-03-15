@@ -17,10 +17,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-class Captcha_Engine implements JsonSerializable
+namespace Pluf\Captcha;
+
+use Pluf\ModelUtils;
+use JsonSerializable;
+use Pluf_HTTP_Request;
+use Tenant_Service;
+
+abstract class Engine implements JsonSerializable
 {
 
-    const ENGINE_PREFIX = 'captcha_engine_';
+    const ENGINE_PREFIX = 'Engine';
 
     /**
      * Get type of the engine
@@ -29,13 +36,9 @@ class Captcha_Engine implements JsonSerializable
      */
     public function getType()
     {
-        $name = strtolower(get_class($this));
-        // NOTE: maso, 1395: تمام متورهای پرداخت باید در پوشه تعیین شده قرار
-        // بگیرند
-        if (strpos($name, Captcha_Engine::ENGINE_PREFIX) !== 0) {
-            throw new Captcha_Exception_EngineLoad('Engine class must be placed in engine package.');
-        }
-        return substr($name, strlen(Captcha_Engine::ENGINE_PREFIX));
+        $ref = new \ReflectionObject($this);
+        $name = strtolower($ref->getShortName());
+        return $name;
     }
 
     /**
@@ -94,11 +97,7 @@ class Captcha_Engine implements JsonSerializable
      * @param Pluf_HTTP_Request $request
      * @return boolean the state of verification
      */
-    public function verify($request)
-    {
-        // NOTE: must be overide
-        return false;
-    }
+    public abstract function verify(Pluf_HTTP_Request $request): bool;
 
     /**
      * (non-PHPdoc)
@@ -143,7 +142,7 @@ class Captcha_Engine implements JsonSerializable
         foreach ($general as $gp) {
             $param['children'][] = $gp;
         }
-        
+
         $extra = $this->getExtraParam();
         foreach ($extra as $ep) {
             $param['children'][] = $ep;
