@@ -23,7 +23,7 @@ use Pluf\Exception;
 use Pluf\Test\Client;
 use Pluf\Test\TestCase;
 use Pluf;
-use Pluf_Exception;
+use \Pluf\Exception;
 use Pluf_HTTP_Request;
 use Pluf_Migration;
 use Pluf_Tenant;
@@ -74,7 +74,7 @@ class VerifyTest extends TestCase
         self::$tenant->subdomain = 'test';
         self::$tenant->validate = true;
         if (true !== self::$tenant->create()) {
-            throw new Pluf_Exception('Faile to create new tenant');
+            throw new \Pluf\Exception('Faile to create new tenant');
         }
     }
 
