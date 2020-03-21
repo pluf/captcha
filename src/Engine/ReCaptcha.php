@@ -19,7 +19,7 @@
  */
 namespace Pluf\Captcha\Engine;
 
-use \Pluf\Exception_MismatchParameter;
+use Pluf_Exception_MismatchParameter;
 use Pluf_HTTP_Request;
 
 /**
@@ -72,7 +72,7 @@ class ReCaptcha extends \Pluf\Captcha\Engine
             $token = $request->REQUEST[self::TOKEN_ANDROID_KEY];
         } else {
             // TODO: maos, 2018: throw 404 error
-            throw new \Pluf\Exception_MismatchParameter('recaptcha token not found');
+            throw new Pluf_Exception_MismatchParameter('recaptcha token not found');
         }
         // Try to workaround locked down web servers.
         if (! ini_get('allow_url_fopen')) {
