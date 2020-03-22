@@ -31,7 +31,7 @@ class Captcha_Exception_EngineNotFound extends \Pluf\Exception
      * Creates new instance of this class
      *
      * @param string $message
-     * @param Pluf_Exception $previous
+     * @param \Pluf\Exception $previous
      * @param string $link
      * @param string $developerMessage
      */
