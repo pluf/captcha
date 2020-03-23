@@ -50,7 +50,7 @@ abstract class Engine implements JsonSerializable
      * <code><pre>
      * $secure = parent::getProperty("reCAPTHCA.secureCode");
      * if($secure == NULL){
-     * throw new Pluf_Exception("Secure code is not set");
+     * throw new \Pluf\Exception("Secure code is not set");
      * }
      * </pre></code>
      *
